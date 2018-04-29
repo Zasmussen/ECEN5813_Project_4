@@ -16,7 +16,7 @@ LB_e LB_init(LB_t ** buffPtr, uint32_t length)
 {
   if(length <= 0)
   {
-    return NO_LENGTH;
+    return LB_NO_LENGTH;
   }
   // Dynamically allocate LB struct
 
@@ -37,7 +37,7 @@ LB_e LB_init(LB_t ** buffPtr, uint32_t length)
   (*buffPtr)->tail = (*buffPtr)->basePtr;
   (*buffPtr)->length = length;
   (*buffPtr)->count = 0;
-  return SUCCESS;
+  return LB_SUCCESS;
 }
 
 
@@ -53,7 +53,7 @@ LB_e LB_destroy(LB_t * buffPtr)
   buffPtr->tail = NULL;
   free(buffPtr);
   buffPtr = NULL;
-  return SUCCESS;
+  return LB_SUCCESS;
 }
 
 
@@ -98,7 +98,7 @@ LB_e LB_buffer_add_item(LB_t * buffPtr, log_s data)
     (*(buffPtr)->head).checksum = data.checksum;
     buffPtr->count++;
   }
-  return SUCCESS;
+  return LB_SUCCESS;
 }
 
 
@@ -141,7 +141,7 @@ LB_e LB_buffer_remove_item(LB_t * buffPtr, log_s * value)
   }
 
   buffPtr->count--;
-  return SUCCESS;
+  return LB_SUCCESS;
 }
 
 

@@ -99,6 +99,16 @@ uint8_t UART_receive(uint8_t * value)
 
 uint8_t UART_receive_n(uint8_t * value, size_t size)
 {
+  if(!value)
+  {
+    return 1;
+  }
+  uint32_t i;
+  for(i=0;i<size;i++)
+  {
+    while(!((UART0_S1 & UART0_S1_RDRF_MASK)>>UART0_S1_RDRF_SHIFT));
+    *(value+i) = UART0_D;
+  }
   return 0;
 }
 
