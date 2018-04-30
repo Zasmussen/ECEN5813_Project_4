@@ -19,7 +19,7 @@ void project4()
 #endif
 #ifdef ANALYSIS
   CB_init(&receive_buffer,RECEIVE_SIZE);
-  LOG_s pro_log = ((log_s){DATA_ANALYSIS_STARTED,MOD_PROJECT4,0,0,NULL,(DATA_ANALYSIS_STARTED^MOD_PROJECT4^0^0)});
+  log_s pro_log = ((log_s){DATA_ANALYSIS_STARTED,MOD_PROJECT4,0,0,NULL,(DATA_ANALYSIS_STARTED^MOD_PROJECT4^0^0)});
   LOG_ITEM(&pro_log,sizeof(pro_log));
 #endif
   log_s ret;
@@ -33,6 +33,7 @@ void project4()
       LOG_RAW_ITEM(&ret);
     }
 #endif
+#ifdef ANALYSIS
     uint8_t character;
     error = CB_buffer_remove_item(receive_buffer,&character);
     if(!error)
@@ -41,6 +42,7 @@ void project4()
       {
         dump_statistics();
         //return;
+
       }
       if((character >= 65 && character <= 90) || (character >= 97 && character <= 122))
       {
@@ -59,58 +61,55 @@ void project4()
         misc++;
       }
     }
+#endif
   }
 
-
-
-  // uint8_t * ptr = (uint8_t *)malloc(10);
-  // *ptr = 1;
-  // *(ptr+1) = 2;
-  // *(ptr+2) = '\0';
-  // log_init();
-  // log_s test;
-  // test.log_id = LOGGER_INITIALIZED;
-  // test.module_id = MOD_LOGGER;
-  // test.timestamp = 50;
-  // test.length = 2;
-  // test.payload = ptr;
-  // test.checksum = 50;
-  // LOG_RAW_ITEM(&test);
-  //LOG_RAW_INT(3);
-  //log_s ret;
-  //LB_buffer_remove_item(logBuff,&ret);
-  //log_string((uint8_t*)"hello\0");
-  //printf("%d\n",ret.log_id);
 }
 
 
 void dump_statistics()
 {
 #ifdef KL25Z
-	uint8_t * send = (uint8_t *)reserve_words(10);;
-  uint8_t digits;
-  UART_send_n((uint8_t *)"Statistics\n\r",12);
-  UART_send_n((uint8_t *)"-----------\n\r",13);
-  UART_send_n((uint8_t *)"Alphabetic\n\r",12);
-  digits = my_itoa(alph,send,10);
-  UART_send_n(send,digits-1);
-  UART_send_n((uint8_t *)"\n\r\n\r",4);
-
-  UART_send_n((uint8_t *)"Numeric\n\r",9);
-  digits = my_itoa(numer,send,10);
-  UART_send_n(send,digits-1);
-  UART_send_n((uint8_t *)"\n\r\n\r",4);
-
-  UART_send_n((uint8_t *)"Punctuation\n\r",13);
-  digits = my_itoa(punc,send,10);
-  UART_send_n(send,digits-1);
-  UART_send_n((uint8_t *)"\n\r\n\r",4);
-
-  UART_send_n((uint8_t *)"Miscellaneous\n\r",15);
-  digits = my_itoa(misc,send,10);
-  UART_send_n(send,digits-1);
-  UART_send_n((uint8_t *)"\n\r\n\r",4);
-  free(send);
+#ifdef LOG
+    uint8_t * payload = malloc(10);
+    *payload = alph;
+    log_s dump_alph_log = ((log_s){DATA_ALPHA_COUNT,MOD_PROJECT2,0,1,payload,(DATA_ALPHA_COUNT^MOD_PROJECT2^0^1)});
+    LOG_ITEM(&dump_alph_log,sizeof(dump_alph_log));
+    *payload = numer;
+    log_s dump_numeric_log = ((log_s){DATA_NUMERIC_COUNT,MOD_PROJECT2,0,1,payload,(DATA_NUMERIC_COUNT^MOD_PROJECT2^0^1)});
+    LOG_ITEM(&dump_numeric_log,sizeof(dump_numeric_log));
+    *payload = punc;
+    log_s dump_punctuation_log = ((log_s){DATA_PUNCTUATION_COUNT,MOD_PROJECT2,0,1,payload,(DATA_PUNCTUATION_COUNT^MOD_PROJECT2^0^1)});
+    LOG_ITEM(&dump_punctuation_log,sizeof(dump_punctuation_log));
+    *payload = misc;
+    log_s dump_misc_log = ((log_s){DATA_MISC_COUNT,MOD_PROJECT2,0,1,payload,(DATA_MISC_COUNT^MOD_PROJECT2^0^1)});
+    LOG_ITEM(&dump_misc_log,sizeof(dump_misc_log));
+    free(payload);
+#endif
+	// uint8_t * send = (uint8_t *)reserve_words(10);;
+  // uint8_t digits;
+  // UART_send_n((uint8_t *)"Statistics\n\r",12);
+  // UART_send_n((uint8_t *)"-----------\n\r",13);
+  // UART_send_n((uint8_t *)"Alphabetic\n\r",12);
+  // digits = my_itoa(alph,send,10);
+  // UART_send_n(send,digits-1);
+  // UART_send_n((uint8_t *)"\n\r\n\r",4);
+  //
+  // UART_send_n((uint8_t *)"Numeric\n\r",9);
+  // digits = my_itoa(numer,send,10);
+  // UART_send_n(send,digits-1);
+  // UART_send_n((uint8_t *)"\n\r\n\r",4);
+  //
+  // UART_send_n((uint8_t *)"Punctuation\n\r",13);
+  // digits = my_itoa(punc,send,10);
+  // UART_send_n(send,digits-1);
+  // UART_send_n((uint8_t *)"\n\r\n\r",4);
+  //
+  // UART_send_n((uint8_t *)"Miscellaneous\n\r",15);
+  // digits = my_itoa(misc,send,10);
+  // UART_send_n(send,digits-1);
+  // UART_send_n((uint8_t *)"\n\r\n\r",4);
+  // free(send);
 #endif
 #ifdef HOST
   PRINTF("Statistics\n");

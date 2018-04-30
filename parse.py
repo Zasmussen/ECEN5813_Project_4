@@ -87,8 +87,10 @@ with open("logoutput.txt", "r") as file:
                 array = currentline[3].split(".")
                 for s in array:
                     processed.write(s)
-                    processed.write(',')
-
+                    processed.write(' ')
+                if int(currentline[0])^int(currentline[1])^int(currentline[2])^len(array) != int(currentline[4]):
+                    processed.write("TRANSMISSION ERROR")
             else:
-
+                if int(currentline[0])^int(currentline[1])^int(currentline[2]) != int(currentline[4]):
+                    processed.write("TRANSMISSION ERROR")
             processed.write("\n")
