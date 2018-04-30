@@ -13,6 +13,8 @@
 #define __GPIO_H__
 #include <stdint.h>
 #include <stdlib.h>
+#include "logger.h"
+#include "logger_queue.h"
 
 #define RGB_RED_PIN   (1 << 18)      // PTB18
 #define RGB_GREEN_PIN (1 << 19)      // PTB19
@@ -30,6 +32,7 @@
 #define RGB_BLUE_OFF()        (PORTB_Clear(RGB_BLUE_PIN))
 #define RGB_BLUE_TOGGLE()     (PORTB_Toggle(RGB_BLUE_PIN))
 
+extern LB_t * logBuff;
 
 /**
  * @brief Configures the RGB LED's

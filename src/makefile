@@ -54,7 +54,7 @@ endif
 # Sets all flags and compiler settings for build
 CSTD=c99
 COMMONFLAGS = -std=$(CSTD) -Wall -g -fgnu89-inline -Werror -O0
-CPPFLAGS = $(VERB) -DPROJECT4
+CPPFLAGS = $(VERB) -DPROJECT4 -DLOG -DPROFILING
 LDFLAGS += -Wl,-Map=main.map$(ARMLDFLAGS)
 CFLAGS += $(COMMONFLAGS) $(ARMFLAGS)
 

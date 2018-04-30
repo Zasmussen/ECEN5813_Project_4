@@ -30,8 +30,9 @@ void GPIO_Configure()
   GPIOB->PDOR |= (RGB_RED_PIN);
   GPIOB->PDOR |= (RGB_GREEN_PIN);
   GPIOD->PDOR |= (RGB_BLUE_PIN);
-#if LOG
-  LOG_ITEM(log_s{GPIO_INITIALIZED,MOD_GPIO,})
+#ifdef LOG
+  log_s GPIO_log = ((log_s){GPIO_INITIALIZED,MOD_GPIO,0,0,NULL,(GPIO_INITIALIZED^MOD_GPIO^0^0)});
+  LOG_ITEM(&GPIO_log,sizeof(GPIO_log));
 #endif
   return;
 }

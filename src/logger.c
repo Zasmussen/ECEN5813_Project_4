@@ -8,9 +8,8 @@ void log_init()
 #ifdef KL25Z
   SIM_SCGC6 |= SIM_SCGC6_RTC(1);
   RTC_CR = RTC_CR_OSCE(1)| RTC_CR_UM(0)|RTC_CR_SUP(1)| RTC_CR_WPE(0)|RTC_CR_SWR(0);
-  uint32_t currenttime;
-  UART_receive_n((uint8_t*)(&currenttime), 4);
-  RTC_TSR = currenttime;
+  //UART_receive_n((uint8_t*)(&currenttime), 4);
+  RTC_TSR = 1234;
   RTC_IER = RTC_IER_TSIE(1) | RTC_IER_TAIE(0) |RTC_IER_TOIE(0) | RTC_IER_TIIE(0);
   RTC_SR = RTC_SR_TCE(1);
 #endif
@@ -22,6 +21,10 @@ void log_init()
 
 uint8_t log_data(uint8_t * src, uint32_t length)
 {
+  if((length = 0) || !src)
+  {
+    return 1;
+  }
 #if defined(HOST) || defined(BBB)
   uint32_t i;
   for(i=0;i<length-1;i++)
@@ -114,6 +117,7 @@ uint8_t log_item(log_s * log, uint32_t size)
   log_data(log->payload,log->length);
   UART_send(',');
   log_integer(log->checksum);
+  UART_send_n((uint8_t *)"\r\n",2);
 
 
 #endif

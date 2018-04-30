@@ -25,6 +25,7 @@
 #endif
 
 void project4();
+void dump_statistics();
 
 
 #endif

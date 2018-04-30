@@ -11,7 +11,7 @@ SRCS = main.c  conversion.c data.c debug.c project4.c memory.c  circbuf.c nordic
 
 # Add in KL25Z files if platform is set to it
 ifeq ($(PLATFORM),KL25Z)
-	SRCS += system_MKL25Z4.c startup_MKL25Z4.S arch_arm32.c GPIO.c UART.c spi.c project1.c project2.c
+	SRCS += system_MKL25Z4.c startup_MKL25Z4.S arch_arm32.c GPIO.c UART.c spi.c project1.c
 endif
 ifeq ($(PLATFORM),HOST)
 	SRCS += #tests.c
